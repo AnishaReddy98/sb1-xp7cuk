@@ -122,27 +122,23 @@ function App() {
 
     // Improved keyword matching for predefined scenarios
     const lowercaseInput = input.toLowerCase();
+
     if (lowercaseInput.includes('delay') && lowercaseInput.includes('hour')) {
       const hours = parseInt(input.match(/\d+/)?.[0] || '3');
-      botResponse = predefinedResponses.flightDelay(hours);
+      botResponse = passengerRightsTemplates.flightDelay('1', hours);
     } else if (lowercaseInput.includes('cancel')) {
-      botResponse = predefinedResponses.cancelledFlight;
+      botResponse = passengerRightsTemplates.flightDelayLong;
     } else if (
       lowercaseInput.includes('baggage') ||
       lowercaseInput.includes('luggage') ||
       lowercaseInput.includes('suitcase')
     ) {
-      if (
-        lowercaseInput.includes('damage') ||
-        lowercaseInput.includes('broken') ||
-        lowercaseInput.includes('destroyed')
-      ) {
-        botResponse = predefinedResponses.baggageDamage;
-      }
-    }
-
-    if (!botResponse) {
-      botResponse = "I'm sorry, but I don't have specific information about that scenario. Please try asking about flight delays, cancellations, or baggage damage. For other issues, I recommend contacting your airline directly or checking their website for more information.";
+      botResponse = passengerRightsTemplates.baggageDamageCompensation;
+    } else if (lowercaseInput.includes('medical emergency')) {
+      botResponse = passengerRightsTemplates.medicalEmergency;
+    } else {
+      botResponse =
+        "I'm sorry, but I don't have specific information about that scenario. Please try asking about flight delays, cancellations, or baggage damage. For other issues, I recommend contacting your airline directly or checking their website for more information.";
     }
 
     const botMessage = { text: botResponse, isUser: false };
@@ -191,32 +187,16 @@ function App() {
         </div>
         <button
           onClick={() => setShowRights(!showRights)}
-          className="flex items-center text-blue-600 hover:text-blue-800"
+          className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
         >
-          <Info size={16} className="mr-1" />
-          {showRights ? 'Hide' : 'Show'} Passenger Rights Information
+          {showRights ? 'Hide Passenger Rights' : 'Show Passenger Rights'}
         </button>
-      </div>
-      {showRights && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-          <div className="relative top-20 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white">
-            <div className="mt-3 text-center">
-              <h3 className="text-lg leading-6 font-medium text-gray-900">Passenger Rights Information</h3>
-              <div className="mt-2 px-7 py-3">
-                <PassengerRights />
-              </div>
-              <div className="items-center px-4 py-3">
-                <button
-                  onClick={() => setShowRights(false)}
-                  className="px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
+        {showRights && (
+          <div className="mt-4 bg-gray-100 p-4 rounded-lg">
+            <PassengerRights />
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
