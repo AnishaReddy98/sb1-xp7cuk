@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { HfInference } from '@huggingface/inference';
-import { MessageSquare, Send, Plane, Info } from 'lucide-react';
+import { MessageSquare, Send, Plane } from 'lucide-react';
 import PassengerRights from './PassengerRights';
 
 const hf = new HfInference(import.meta.env.VITE_HUGGINGFACE_API_KEY);
@@ -134,6 +134,8 @@ function App() {
       lowercaseInput.includes('suitcase')
     ) {
       botResponse = passengerRightsTemplates.baggageDamageCompensation;
+    } else if (lowercaseInput.includes('missed connecting flight')) {
+      botResponse = passengerRightsTemplates.missedConnectingFlight;
     } else if (lowercaseInput.includes('medical emergency')) {
       botResponse = passengerRightsTemplates.medicalEmergency;
     } else {
@@ -180,9 +182,9 @@ function App() {
           />
           <button
             onClick={handleSend}
-            className="bg-blue-500 text-white px-4 py-2 rounded-r-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="bg-blue-600 text-white px-4 py-2 rounded-r-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <Send size={20} />
+            <Send />
           </button>
         </div>
         <button
