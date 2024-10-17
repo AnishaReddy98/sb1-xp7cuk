@@ -39,6 +39,16 @@ const predefinedResponses = {
 
     Remember, airlines are responsible for baggage damage during transport, but they may try to limit their liability. Stay informed and assertive about your rights.
   `,
+  healthemergency: `
+  If you ever feel unfit or can sense a medical emergency, stay calm. All the airports are equipped 
+        with the following:
+     
+        1. Medical doctors
+        2. Ambulance
+        3. Medical support equipment
+        4. Paramedical personnel
+        5. Expert handling of medical emergencies
+  `,
 };
 
 function App() {
