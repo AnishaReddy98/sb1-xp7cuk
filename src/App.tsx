@@ -10,7 +10,7 @@ const predefinedResponses = {
   flightDelay: (hours: number) => `
     For a flight delay of ${hours} hours, you have the following rights:
     1. Right to care: The airline should provide meals and refreshments, two free phone calls, emails or faxes.
-    2. Compensation: For delays of 3 hours or more, you may be entitled to compensation of Rs. 5000 to Rs. 20000, depending on the flight distance.
+    2. Compensation: For delays of 3 hours or more, you may be entitled to compensation of €250 to €600, depending on the flight distance.
     3. Refund or re-routing: If the delay is 5 hours or more, you have the right to a refund of your ticket or a return flight to your first point of departure.
     4. Accommodation: If the delay extends overnight, the airline should provide hotel accommodation and transport between the airport and the hotel.
     Always check with your specific airline for their policies, as they may offer additional compensation or services.
@@ -38,16 +38,6 @@ const predefinedResponses = {
     4. Be persistent and know your rights under the Montreal Convention or applicable air passenger rights regulations.
 
     Remember, airlines are responsible for baggage damage during transport, but they may try to limit their liability. Stay informed and assertive about your rights.
-  `,
-  healthemergency: `
-  If you ever feel unfit or can sense a medical emergency, stay calm. All the airports are equipped 
-        with the following:
-     
-        1. Medical doctors
-        2. Ambulance
-        3. Medical support equipment
-        4. Paramedical personnel
-        5. Expert handling of medical emergencies
   `,
 };
 
