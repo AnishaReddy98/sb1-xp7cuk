@@ -6,39 +6,104 @@ import PassengerRights from './PassengerRights';
 const hf = new HfInference(import.meta.env.VITE_HUGGINGFACE_API_KEY);
 
 // Predefined responses for common scenarios
-const predefinedResponses = {
-  flightDelay: (hours: number) => `
-    For a flight delay of ${hours} hours, you have the following rights:
-    1. Right to care: The airline should provide meals and refreshments, two free phone calls, emails or faxes.
-    2. Compensation: For delays of 3 hours or more, you may be entitled to compensation of €250 to €600, depending on the flight distance.
-    3. Refund or re-routing: If the delay is 5 hours or more, you have the right to a refund of your ticket or a return flight to your first point of departure.
-    4. Accommodation: If the delay extends overnight, the airline should provide hotel accommodation and transport between the airport and the hotel.
-    Always check with your specific airline for their policies, as they may offer additional compensation or services.
-  `,
-  cancelledFlight: `
-    If your flight is cancelled, you have the following rights:
-    1. Re-routing or refund: You can choose between an alternative flight to your destination or a full refund of your ticket.
-    2. Compensation: You may be entitled to compensation between €250 and €600, unless the cancellation was due to extraordinary circumstances.
-    3. Right to care: The airline must provide meals, refreshments, communication facilities, and if necessary, accommodation.
-    4. Information: The airline must inform you about your rights and the reason for the cancellation.
-    Contact your airline immediately to discuss your options and any potential compensation.
-  `,
-  baggageDamage: `
-    If your baggage is damaged during a flight, you have the following rights:
-    1. Report immediately: File a Property Irregularity Report (PIR) at the airport before leaving the baggage claim area.
-    2. Deadline: You must file a written claim within 7 days of receiving your baggage.
-    3. Compensation: Airlines are liable for damages up to approximately 1,300 SDR (Special Drawing Rights).
-    4. Evidence: Keep all receipts for any replacement items you need to purchase and take photos of the damage.
-    5. Insurance: Check if your travel insurance covers baggage damage for additional compensation.
+const passengerRightsTemplates = {
+  introduction: `
+    Fly Informed, Reach Relaxed.
 
-    Steps to take:
-    1. Document the damage with photos and keep all relevant travel documents (boarding pass, baggage tag).
-    2. Contact your airline's customer service immediately to start the claim process.
-    3. Follow up with a written claim if required, including all evidence and receipts.
-    4. Be persistent and know your rights under the Montreal Convention or applicable air passenger rights regulations.
+    Air travel is now a part of everyday life, with many first-time flyers experiencing the ease and convenience of flying.
+    At the Ministry of Civil Aviation, we strive to keep the system efficient, fair, and approachable to provide you with a smooth experience. 
+    Less than 0.1% of flyers face inconvenience in flying, but sometimes things don’t work out as planned.
+    Knowing your rights as a passenger can help you enjoy a more comfortable and relaxed journey.
 
-    Remember, airlines are responsible for baggage damage during transport, but they may try to limit their liability. Stay informed and assertive about your rights.
+    This Passenger Charter outlines the rules and rights that apply to your air travel in an easy-to-understand format.
   `,
+
+  flightDelay: (scenario, hours) => `
+    If you experience a flight delay while traveling, your rights depend on the scenario:
+
+    Scenario ${scenario}: 
+    - You have checked in on time, but the airline expects a delay of:
+      • 2 hours or more for flights with a block time of up to 2.5 hours.
+      • 3 hours or more for flights with a block time between 2.5 and 5 hours.
+      • 4 hours or more for flights not falling in the above two categories.
+    Your Right: You must be offered meals and refreshments free of charge, in relation to the waiting time.
+  `,
+
+  flightDelayLong: `
+    Scenario 2: 
+    If your domestic flight is expected to be delayed by more than 6 hours:
+    Your Right:
+    - Rescheduled time should be communicated to you more than 24 hours before the original scheduled departure time.
+    - The airline must offer either an alternative flight within a period of 6 hours or a full refund of your ticket.
+  `,
+
+  flightDelayExtended: `
+    Scenario 3: 
+    If the airline communicates a delay more than 24 hours prior to the original scheduled time, and the delay is more than:
+    • 24 hours, or 
+    • 6 hours for flights scheduled to depart between 20:00 and 03:00 hours:
+    Your Right: Free hotel accommodation.
+  `,
+
+  missedConnectingFlight: `
+    If your flight is delayed and you miss your connecting flight due to the airline's fault, you have the right to be rebooked on the next available flight at no extra cost.
+    The airline may also provide meals, refreshments, and accommodation if the delay is significant, depending on the length of your layover and the airline's policies.
+    You may also be eligible for compensation based on the situation and travel distance.
+  `,
+
+  passengerWithDisability: `
+    Rights for Passengers with Disabilities:
+    - No airline can refuse to carry you along with your assistive aids/devices, escorts, and guide dogs.
+    - All necessary information about your specific requirements should be obtained by the airline during the ticketing/online booking process.
+    - You must notify the airline about your needs at least 48 hours before the scheduled departure time.
+    - If assisted by an escort, airlines shall make reasonable efforts to seat them next to you.
+  `,
+
+  medicalEmergency: `
+    Navigating Medical Situations at the Airport:
+    If you feel unfit or experience a medical emergency, stay calm. Airports are equipped with:
+    • Medical doctors, 
+    • Ambulances, 
+    • Medical support equipment, 
+    • Paramedical personnel, 
+    • Expert handling of medical emergencies.
+  `,
+
+  internationalTravelCompensation: `
+    During International Travel:
+    - In case of death or bodily injury to a passenger on board an aircraft, the airline is liable to pay damages up to 113,100 SDR per passenger.
+    - In case of death inside the aircraft due to natural causes, the airline is not liable to pay any compensation.
+  `,
+
+  domesticTravelCompensation: `
+    For Domestic Travel:
+    - In case of death or bodily injury to a passenger on board an aircraft, the airline is liable to pay up to ₹2,000,000 per passenger.
+    - In case of death inside the aircraft due to natural causes, the airline is not liable to pay any compensation.
+  `,
+
+  baggageDamageCompensation: `
+    Lost or Damaged Baggage: Know Your Rights.
+    - You can claim damages if the event causing the loss, delay, or damage took place on board the aircraft or while the baggage was in the airline's care.
+    - For unchecked baggage, the carrier is liable if the damage resulted from its fault or that of its agents.
+
+    International Carriage:
+    - In case of loss, delay, or damage to baggage, the liability is limited to 1,131 SDR per passenger.
+    - For cargo, liability is limited to 19 SDR per kg.
+
+    Domestic Carriage:
+    - In case of death or bodily injury to a passenger on board an aircraft, the airline is liable to pay up to ₹2,000,000 per passenger.
+  `,
+
+  rightToInformation: `
+    Right to Information:
+    A clearly legible notice must be displayed at check-in stating:
+    "If you are denied boarding or if your flight is cancelled or delayed, ask at the check-in counter or boarding gate for your rights regarding compensation and assistance."
+
+    - If you are denied boarding or a flight is cancelled, the operating carrier must provide written notice setting out the rules for compensation and assistance.
+    - For visually impaired passengers, this information shall be provided through alternative means.
+    - Go through the Passenger Charter provided with your ticket, or find it along with in-flight magazines and at airports.
+    - Airlines are required to regularly submit data on cases of denied boarding, cancellations, and delays to the DGCA, which can be viewed on the DGCA portal.
+  `
 };
 
 function App() {
